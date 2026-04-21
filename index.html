@@ -17,10 +17,10 @@
             font-family: 'Inter', sans-serif;
             margin: 0;
             background-color: white;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* --- PAGE DE LOGIN (PLEIN ÉCRAN) --- */
+        /* --- LOGIN PAGE --- */
         #login-page {
             position: fixed;
             inset: 0;
@@ -29,227 +29,198 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
 
         .login-card {
             background: white;
-            width: 400px;
-            padding: 50px;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
             border-radius: 16px;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
-        /* --- INTERFACE PRINCIPALE --- */
+        /* --- LAYOUT RESPONSIVE --- */
         #main-app {
             display: none; 
-            height: 100vh;
+            min-height: 100vh;
             width: 100vw;
             display: flex;
+            flex-direction: row;
         }
 
-        /* SIDEBAR */
+        /* SIDEBAR RESPONSIVE */
         .sidebar {
             width: 280px;
             background: white;
             border-right: 1px solid #e2e8f0;
             display: flex;
             flex-direction: column;
-            z-index: 10;
+            transition: transform 0.3s ease;
+            z-index: 50;
+        }
+
+        /* Menu Mobile Caché par défaut sur petit écran */
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: fixed;
+                height: 100vh;
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
         }
 
         .nav-group { flex: 1; overflow-y: auto; padding: 10px 0; }
-        
-        .section-label {
-            padding: 20px 25px 8px;
-            font-size: 11px;
-            font-weight: 700;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        .section-label { padding: 20px 25px 8px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-link { padding: 10px 25px; color: #475569; display: flex; justify-content: space-between; align-items: center; font-size: 14px; cursor: pointer; }
+        .nav-link.active { background: #f1f5f9; color: var(--educaloi-blue-dark); font-weight: 700; border-right: 4px solid var(--educaloi-cyan); }
 
-        .nav-link {
-            padding: 10px 25px;
-            color: #475569;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .nav-link:hover { background: #f8fafc; color: var(--educaloi-cyan); }
-
-        .nav-link.active {
-            background: #f1f5f9;
-            color: var(--educaloi-blue-dark);
-            font-weight: 700;
-            border-right: 4px solid var(--educaloi-cyan);
-        }
-
-        /* CONTENU PRINCIPAL */
+        /* CONTENT AREA */
         .content-area {
             flex: 1;
             display: flex;
             flex-direction: column;
             background: #f8fafc;
+            min-width: 0;
         }
 
-        /* HEADER SUPÉRIEUR (NOM + DÉCONNEXION) */
+        /* TOP NAVBAR RESPONSIVE */
         .top-navbar {
             height: 65px;
             background: white;
             border-bottom: 1px solid #e2e8f0;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            padding: 0 40px;
-            gap: 20px;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 40;
         }
 
-        .user-info {
-            display: flex;
-            flex-direction: column;
-            text-align: right;
-            line-height: 1.2;
-        }
-
-        .btn-logout-top {
-            background: #fff1f2;
-            color: #e11d48;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 800;
-            border: 1px solid #fecdd3;
-            cursor: pointer;
-            transition: 0.2s;
-            text-transform: uppercase;
-        }
-        .btn-logout-top:hover { background: #ffe4e6; }
-
-        /* ÉDITEUR / CAPTATION */
         .hero {
             background: linear-gradient(rgba(0, 77, 113, 0.95), rgba(0, 176, 216, 0.85)), url('https://www.transparenttextures.com/patterns/cubes.png');
-            padding: 50px 40px 80px;
+            padding: 40px 20px 80px;
             color: white;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .hero { padding: 60px 40px 100px; text-align: left; }
         }
 
         .captation-container {
-            margin: -50px 40px 0;
+            margin: -50px 15px 40px;
             background: white;
             border-radius: 12px;
-            padding: 40px;
+            padding: 25px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
             border: 1px solid #e2e8f0;
         }
 
+        @media (min-width: 768px) {
+            .captation-container { margin: -60px 40px 40px; padding: 40px; }
+        }
+
         textarea {
             width: 100%;
-            height: 160px;
+            height: 180px;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
-            padding: 20px;
+            padding: 15px;
             font-size: 16px;
             margin: 20px 0;
             resize: none;
             background: #fafafa;
-            font-family: inherit;
         }
 
-        textarea:focus { outline: none; border-color: var(--educaloi-cyan); background: white; }
+        /* Overlay pour fermer le menu mobile */
+        #overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 45;
+        }
     </style>
 </head>
 <body>
 
+<div id="overlay" onclick="toggleMenu()"></div>
+
 <div id="login-page">
     <div class="login-card">
-        <div style="font-weight: 900; color: var(--educaloi-blue-dark); font-size: 24px; letter-spacing: -1px; margin-bottom: 5px;">Éducaloi Assistance AI</div>
-        <p style="font-size: 11px; color: #64748b; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px;">Portail Avocat-Conseiller</p>
-        
-        <div style="text-align: left; margin-bottom: 20px;">
-            <input type="text" placeholder="Utilisateur" class="w-full p-3 mb-3 border rounded-lg bg-slate-50" value="sroy@educaloi.qc.ca">
-            <input type="password" placeholder="Mot de passe" class="w-full p-3 border rounded-lg bg-slate-50" value="••••••••">
-        </div>
-
-        <button onclick="login()" style="width: 100%; background: var(--educaloi-cyan); color: white; padding: 14px; border-radius: 8px; font-weight: 800; border: none; cursor: pointer;">
-            ACCÉDER AU DOSSIER
-        </button>
+        <div style="font-weight: 900; color: var(--educaloi-blue-dark); font-size: 22px; margin-bottom: 5px;">Éducaloi Assistance AI</div>
+        <p style="font-size: 10px; color: #64748b; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px;">Portail Avocat-Conseiller</p>
+        <input type="text" placeholder="Utilisateur" class="w-full p-3 mb-3 border rounded-lg" value="sroy@educaloi.qc.ca">
+        <input type="password" placeholder="Mot de passe" class="w-full p-3 mb-4 border rounded-lg" value="••••••••">
+        <button onclick="login()" class="w-full bg-[#00b0d8] text-white p-4 rounded-lg font-bold">ACCÉDER AU PORTAIL</button>
     </div>
 </div>
 
 <div id="main-app" style="display: none;">
-    <aside class="sidebar">
-        <div style="padding: 22px 25px; border-bottom: 1px solid #f1f5f9;">
-            <div style="font-weight: 900; color: var(--educaloi-blue-dark); font-size: 17px; letter-spacing: -0.5px;">Éducaloi Assistance AI</div>
+    
+    <aside id="sidebar" class="sidebar">
+        <div class="p-6 border-b flex justify-between items-center">
+            <div style="font-weight: 900; color: var(--educaloi-blue-dark); font-size: 16px;">Éducaloi AI</div>
+            <button class="lg:hidden text-slate-400" onclick="toggleMenu()"><i class="fas fa-times"></i></button>
         </div>
-        
         <div class="nav-group">
-            <div class="section-label">Outils AI</div>
+            <div class="section-label">Outils</div>
             <div class="nav-link active"><span><i class="fas fa-microchip mr-2 text-cyan-500"></i> Aide au conseil</span></div>
             
-            <div class="section-label">Dossiers Récents</div>
-            <div class="nav-link">
-                <span>📁 #2026-104</span>
-                <span class="bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded font-black">URGENT</span>
-            </div>
-            <div style="padding-left: 55px; font-size: 12px; color: #64748b; margin-bottom: 12px;">• Succession Tremblay</div>
-            
+            <div class="section-label">Dossiers</div>
+            <div class="nav-link"><span>📁 #2026-104</span> <span class="bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded font-black">URGENT</span></div>
             <div class="nav-link"><span>📁 #2026-112</span></div>
-            <div style="padding-left: 55px; font-size: 12px; color: #64748b; margin-bottom: 12px;">• Fiducie Morin-Lajoie</div>
             
             <div class="section-label">Historique</div>
-            <div class="nav-link" style="opacity: 0.6; font-size: 12px;">📄 Abus financier (2h)</div>
-            <div class="nav-link" style="opacity: 0.6; font-size: 12px;">📄 Mandat protection (12h)</div>
-        </div>
-
-        <div style="padding: 20px; font-size: 10px; color: #cbd5e1; text-align: center; text-transform: uppercase; font-weight: bold;">
-            Système Synapse v2.4
+            <div class="nav-link opacity-50 text-xs">📄 Abus financier (2h)</div>
+            <div class="nav-link opacity-50 text-xs">📄 Mandat protection (12h)</div>
         </div>
     </aside>
 
     <main class="content-area">
         <nav class="top-navbar">
-            <div class="user-info">
-                <span style="font-weight: 800; font-size: 14px; color: var(--educaloi-blue-dark);">Me Sophie Roy</span>
-                <span style="font-size: 11px; color: #94a3b8; font-weight: 600;">Cabinet Roy & Associés</span>
-            </div>
-            <div style="height: 30px; width: 1px; background: #e2e8f0; margin: 0 5px;"></div>
-            <button onclick="location.reload()" class="btn-logout-top">
-                <i class="fas fa-power-off mr-2"></i> Déconnexion
+            <button class="lg:hidden text-slate-600 text-xl" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
             </button>
+            
+            <div class="flex items-center gap-4 ml-auto">
+                <div class="hidden sm:flex flex-col text-right">
+                    <span class="font-bold text-sm text-slate-800">Me Sophie Roy</span>
+                    <span class="text-[10px] text-slate-400 font-bold uppercase">Roy & Associés</span>
+                </div>
+                <button onclick="location.reload()" class="bg-red-50 text-red-600 p-2 sm:px-4 sm:py-2 rounded-lg text-xs font-bold border border-red-100 flex items-center gap-2">
+                    <i class="fas fa-power-off"></i> <span class="hidden sm:inline">DÉCONNEXION</span>
+                </button>
+            </div>
         </nav>
 
         <div class="hero">
-            <div style="font-size: 11px; font-weight: 800; letter-spacing: 2px; margin-bottom: 8px; opacity: 0.8; text-transform: uppercase;">Module de Corrélation Juridique</div>
-            <h1 style="margin: 0;">Analyse sémantique & Recherche de solutions</h1>
+            <span class="text-[10px] font-black tracking-widest opacity-70 uppercase">Système Synapse Pro</span>
+            <h1 class="text-2xl sm:text-4xl font-black mt-2">Corrélation de faits</h1>
         </div>
 
         <div class="captation-container">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                <div>
-                    <h3 style="margin: 0; color: var(--educaloi-blue-dark); font-weight: 900; font-size: 20px;">Exposé des faits du litige</h3>
-                    <p style="color: #64748b; font-size: 14px; margin-top: 5px;">Décrivez la situation pour identifier les articles de loi et la jurisprudence applicables.</p>
-                </div>
-                <span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[10px] font-bold border border-blue-100 uppercase">Mode Expert Actif</span>
-            </div>
+            <h3 class="font-black text-slate-800 text-lg">Analyse du litige</h3>
+            <p class="text-slate-500 text-sm mt-1">Exposez les faits pour obtenir les pistes de solutions juridiques.</p>
             
-            <textarea id="userInput" placeholder="Saisissez les faits ici... (ex: Un mandataire a effectué une transaction immobilière avant l'homologation du mandat de protection, alors que l'inaptitude était déjà notoire...)"></textarea>
+            <textarea id="userInput" placeholder="Décrivez la situation ici..."></textarea>
             
-            <div style="text-align: right;">
-                <button onclick="simulerAnalyse()" style="background: var(--educaloi-cyan); color: white; padding: 14px 40px; border-radius: 8px; font-weight: 800; border: none; cursor: pointer; box-shadow: 0 4px 6px -1px rgba(0, 176, 216, 0.3);">
-                    LANCER L'ANALYSE SYNAPSE PRO
+            <div class="flex justify-end">
+                <button onclick="analyser()" class="w-full sm:w-auto bg-[#00b0d8] text-white px-8 py-4 rounded-lg font-black shadow-lg shadow-cyan-100">
+                    LANCER L'ANALYSE
                 </button>
             </div>
 
-            <div id="result-box" style="display: none; margin-top: 35px; border-top: 2px solid #f1f5f9; padding-top: 30px; animation: slideUp 0.4s ease;">
-                <div style="background: #f0f9ff; border-left: 5px solid var(--educaloi-cyan); padding: 25px; border-radius: 0 8px 8px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                    <h4 style="margin: 0 0 12px; color: var(--educaloi-blue-dark); font-size: 13px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">
-                        <i class="fas fa-clipboard-check mr-2"></i> Résultats de la corrélation
-                    </h4>
-                    <p id="result-text" style="font-size: 15px; color: #334155; line-height: 1.7;"></p>
+            <div id="result-box" style="display: none;" class="mt-8 pt-8 border-t-2 border-slate-50">
+                <div class="bg-cyan-50 border-l-4 border-cyan-500 p-6 rounded-r-xl">
+                    <h4 class="text-cyan-800 font-black text-xs uppercase tracking-wider mb-2 italic">Rapport Synapse AI</h4>
+                    <p id="result-text" class="text-slate-700 text-sm sm:text-base leading-relaxed"></p>
                 </div>
             </div>
         </div>
@@ -257,31 +228,27 @@
 </div>
 
 <script>
+    function toggleMenu() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        sidebar.classList.toggle('open');
+        overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+    }
+
     function login() {
         document.getElementById('login-page').style.display = 'none';
         document.getElementById('main-app').style.display = 'flex';
     }
 
-    function simulerAnalyse() {
-        const val = document.getElementById('userInput').value;
-        if(!val) return;
-        
+    function analyser() {
+        const txt = document.getElementById('userInput').value;
+        if(!txt) return;
         const box = document.getElementById('result-box');
-        const txt = document.getElementById('result-text');
-        
+        const res = document.getElementById('result-text');
         box.style.display = 'block';
-        txt.innerHTML = "<span style='color:#64748b'>Analyse du Code Civil et des bases de données de jurisprudence en cours...</span>";
-        
-        setTimeout(() => {
-            txt.innerHTML = "<b>Fondement suggéré :</b> Art. 2166 C.c.Q. (Deoirs du mandataire). <br><br><b>Stratégie :</b> Contestation de l'acte pour défaut de capacité au moment de la signature. <br><b>Précédent pertinent :</b> <em>Tremblay c. Daigle (2022 QCCS)</em> - Cas de transaction pré-homologation.";
-        }, 1500);
+        res.innerHTML = "<b>Analyse :</b> Risque de nullité de l'acte (Art. 1399 C.c.Q). <br><b>Piste :</b> Action en nullité pour cause d'inaptitude notoire. <br><b>Précédent :</b> <em>Succession Morin c. Lajoie (2023)</em>.";
     }
 </script>
 
-<style>
-    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-</style>
-
 </body>
 </html>
-```
