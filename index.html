@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portail Synapse Pro | Éducaloi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --educaloi-blue-dark: #004d71;
+            --educaloi-cyan: #00b0d8;
+            --bg-light: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: white;
+            overflow: hidden;
+        }
+
+        /* --- PAGE DE LOGIN (PLEIN ÉCRAN) --- */
+        #login-page {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .login-card {
+            background: white;
+            width: 400px;
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            text-align: center;
+        }
+
+        .login-brand {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--educaloi-blue-dark);
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+
+        /* --- INTERFACE PRINCIPALE (CACHÉE AU DÉPART) --- */
+        #main-app {
+            display: none; /* Révélé après login */
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-group { flex: 1; overflow-y: auto; padding: 20px 0; }
+        
+        .section-label {
+            padding: 10px 25px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            padding: 12px 25px;
+            color: #475569;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .nav-link.active {
+            background: #f1f5f9;
+            color: var(--educaloi-blue-dark);
+            font-weight: 700;
+            border-right: 4px solid var(--educaloi-cyan);
+        }
+
+        .urgent-tag {
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 900;
+        }
+
+        /* --- ÉDITEUR / CAPTATION --- */
+        .workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f8fafc;
+        }
+
+        .top-bar {
+            background: #f0f7f9;
+            padding: 10px 40px;
+            border-bottom: 1px solid #d1e3ed;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--educaloi-blue-dark);
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0, 77, 113, 0.9), rgba(0, 176, 216, 0.8)), url('https://www.transparenttextures.com/patterns/cubes.png');
+            padding: 60px 40px;
+            color: white;
+        }
+
+        .captation-container {
+            margin: -40px 40px 0;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 180px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 16px;
+            margin: 20px 0;
+            resize: none;
+            background: #fcfcfc;
+        }
+    </style>
+</head>
+<body>
+
+<div id="login-page">
+    <div class="login-card">
+        <div class="login-brand">Éducaloi Assistance AI</div>
+        <p style="font-size: 12px; color: #64748b; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px;">Accès réservé aux conseillers juridiques</p>
+        
+        <div style="text-align: left; margin-bottom: 20px;">
+            <label style="font-size: 12px; font-weight: 700; color: #475569;">Identifiant professionnel</label>
+            <input type="text" class="login-input" value="sroy@educaloi.qc.ca">
+            
+            <label style="font-size: 12px; font-weight: 700; color: #475569;">Mot de passe</label>
+            <input type="password" class="login-input" value="••••••••">
+        </div>
+
+        <button onclick="login()" style="width: 100%; background: var(--educaloi-cyan); color: white; padding: 14px; border-radius: 8px; font-weight: 800; border: none; cursor: pointer;">
+            ENTRER DANS L'ESPACE PRO
+        </button>
+        <p style="font-size: 11px; color: #94a3b8; margin-top: 20px;">Authentification sécurisée AES-256</p>
+    </div>
+</div>
+
+<div id="main-app" style="display: none;">
+    <aside class="sidebar">
+        <div style="padding: 30px 25px; border-bottom: 1px solid #f1f5f9;">
+            <div style="font-weight: 900; color: var(--educaloi-blue-dark); font-size: 18px;">Éducaloi Assistance AI</div>
+        </div>
+        
+        <div class="nav-group">
+            <div class="section-label">Outils AI</div>
+            <div class="nav-link active"><span><i class="fas fa-search-plus mr-2"></i> Aide au conseil</span></div>
+            
+            <div class="section-label">Dossiers Récents (6 Active)</div>
+            <div class="nav-link">
+                <span>📁 #2026-104</span>
+                <span class="urgent-tag">Urgent</span>
+            </div>
+            <div style="padding-left: 55px; font-size: 12px; color: #64748b; margin-bottom: 10px;">• Succession Tremblay</div>
+            
+            <div class="nav-link"><span>📁 #2026-112</span></div>
+            <div style="padding-left: 55px; font-size: 12px; color: #64748b; margin-bottom: 10px;">• Fiducie Morin-Lajoie</div>
+            
+            <div class="section-label">Historique (48h)</div>
+            <div class="nav-link" style="font-size: 12px; opacity: 0.7;">📄 Abus financier (2h)</div>
+            <div class="nav-link" style="font-size: 12px; opacity: 0.7;">📄 Mandat protection (12h)</div>
+
+            <div class="section-label">Ressources</div>
+            <div class="nav-link"><span>🎓 Formation Loi 25</span></div>
+        </div>
+
+        <div style="padding: 20px 25px; border-top: 1px solid #f1f5f9; background: #fafafa;">
+            <div style="font-weight: 700; font-size: 14px; color: var(--educaloi-blue-dark);">Me Sophie Roy</div>
+            <div style="font-size: 11px; color: #94a3b8;">Cabinet Roy & Associés</div>
+            <button onclick="location.reload()" style="margin-top: 15px; color: #ef4444; font-size: 11px; font-weight: 800; border: none; background: none; cursor: pointer; text-transform: uppercase;">
+                <i class="fas fa-power-off mr-1"></i> Déconnexion sécurisée
+            </button>
+        </div>
+    </aside>
+
+    <main class="workspace">
+        <div class="top-bar uppercase">⚖️ Espace confidentiel d'assistance juridique (Avocats & Conseillers)</div>
+        
+        <div class="hero">
+            <div style="font-size: 12px; font-weight: 800; letter-spacing: 2px; margin-bottom: 10px; opacity: 0.9;">PROJET SYNAPSE PRO</div>
+            <h1 style="margin: 0; font-size: 32px; font-weight: 900;">Recherche de solutions et corrélation de faits</h1>
+        </div>
+
+        <div class="captation-container">
+            <h3 style="margin: 0; color: var(--educaloi-blue-dark); font-weight: 800;">Analyse sémantique de litige</h3>
+            <p style="color: #64748b; font-size: 14px; margin-top: 8px;">Décrivez la situation factuelle pour identifier les bases légales et les précédents pertinents.</p>
+            
+            <textarea id="userInput" placeholder="Saisissez les faits ici... (ex: Un mandataire a transféré des fonds avant l'homologation du mandat de protection...)"></textarea>
+            
+            <div style="text-align: right;">
+                <button onclick="simulerAnalyse()" style="background: var(--educaloi-cyan); color: white; padding: 12px 30px; border-radius: 6px; font-weight: 700; border: none; cursor: pointer; transition: 0.2s;">
+                    Lancer l'analyse Synapse Pro
+                </button>
+            </div>
+
+            <div id="result-box" style="display: none; margin-top: 30px; border-top: 2px solid #f1f5f9; padding-top: 30px;">
+                <div style="background: #f0f9ff; border-left: 4px solid var(--educaloi-cyan); padding: 20px; border-radius: 0 8px 8px 0;">
+                    <h4 style="margin: 0 0 10px; color: var(--educaloi-blue-dark); font-size: 14px;">📑 RAPPORT DE CORRÉLATION</h4>
+                    <p id="result-text" style="font-size: 15px; color: #334155; line-height: 1.6;"></p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    function login() {
+        const loginPage = document.getElementById('login-page');
+        const mainApp = document.getElementById('main-app');
+        
+        loginPage.style.opacity = '0';
+        setTimeout(() => {
+            loginPage.style.display = 'none';
+            mainApp.style.display = 'flex';
+        }, 500);
+    }
+
+    function simulerAnalyse() {
+        const input = document.getElementById('userInput').value;
+        if(!input) return;
+        
+        const resultBox = document.getElementById('result-box');
+        const resultText = document.getElementById('result-text');
+        
+        resultBox.style.display = 'block';
+        resultText.innerHTML = "<em>Analyse en cours...</em>";
+        
+        setTimeout(() => {
+            resultText.innerHTML = "<b>Analyse détectée :</b> Violation potentielle de l'Art. 2166 C.c.Q. <br><br><b>Piste stratégique :</b> La validité de l'acte peut être contestée sur la base de l'inaptitude notoire. <br><b>Jurisprudence suggérée :</b> <em>Succession Morin c. Lajoie (2023 QCCS 142)</em>.";
+        }, 1500);
+    }
+</script>
+
+</body>
+</html>
+```
